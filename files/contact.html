@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — ComplDoc</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="brand"><span class="mark">§</span> ComplDoc</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="contact.html" class="nav-cta">Start a project</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" style="padding:64px 0 60px;">
+  <div class="hero-mark" style="font-size:380px; top:-70px;">§</div>
+  <div class="wrap">
+    <span class="cite on-dark">Get in touch</span>
+    <h1 style="font-size:40px; max-width:600px;">Tell us about the system. We'll tell you what the Act actually requires of it.</h1>
+    <p class="lede">Most engagements start with a short description of what the AI system does and who it affects. That's enough to give a first read on risk tier and next steps.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <span class="eyebrow">Direct contact</span>
+        <div class="info-row">
+          <div class="k">Email</div>
+          <div class="v">sarsharjehangir@gmail.com<span>Response within one business day</span></div>
+        </div>
+        <div class="info-row">
+          <div class="k">Phone</div>
+          <div class="v">+92 331 528 0689<span>WhatsApp available for international clients</span></div>
+        </div>
+        <div class="info-row">
+          <div class="k">LinkedIn</div>
+          <div class="v">linkedin.com/company/compldoc<span>Daily notes on Annex IV and Act interpretation</span></div>
+        </div>
+        <div class="info-row">
+          <div class="k">Consultation</div>
+          <div class="v">$75 / 60 minutes<span>The fastest way to get a classification answer</span></div>
+        </div>
+        <div class="info-row">
+          <div class="k">Coverage</div>
+          <div class="v">Remote, EU business hours overlap<span>Clients across the EU, UK, and North America</span></div>
+        </div>
+      </div>
+
+      <form class="compl-form" onsubmit="event.preventDefault(); document.getElementById('form-success').style.display='block'; this.style.display='none';">
+        <div class="form-row">
+          <div class="field">
+            <label for="name">Full name</label>
+            <input id="name" type="text" required placeholder="Your name">
+          </div>
+          <div class="field">
+            <label for="company">Company</label>
+            <input id="company" type="text" placeholder="Company or project name">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" required placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label for="service">Interested in</label>
+            <select id="service">
+              <option>RFP / RFQ response writing</option>
+              <option>Government grant application</option>
+              <option>Bid formation & proposal management</option>
+              <option>Tender formulation & compliance matrix</option>
+              <option>60-minute compliance classification call — $75</option>
+              <option>EU AI Act — Annex IV documentation</option>
+              <option>NIS2 cybersecurity governance</option>
+              <option>SOC 2 readiness documentation</option>
+              <option>GDPR / ISO 42001 / DORA documentation</option>
+              <option>Aviation manual — new or revision</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="system">Tell us about the project</label>
+          <textarea id="system" placeholder="A tender deadline, an AI system awaiting classification, an aviation manual due for revision — briefly describe what it is and what deadline or audit it's tied to."></textarea>
+        </div>
+        <p class="form-note">This form is a working demo on the current build — for a guaranteed response right now, use the email above.</p>
+        <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send inquiry</button>
+        <div id="form-success" style="display:none; background:var(--purple-dim); border:1px solid rgba(107,79,187,0.3); border-radius:6px; padding:18px 20px; color:var(--purple); font-size:14px;">
+          Thank you — this reached the intake queue. Expect a reply within one business day.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="section tight" style="background:var(--paper-2);">
+  <div class="wrap" style="text-align:center;">
+    <span class="eyebrow" style="justify-content:center;">Before you write in</span>
+    <h2 style="max-width:600px; margin:0 auto 16px;">A description of the system gets you a faster, more useful first answer than a general inquiry.</h2>
+    <p class="lede" style="margin:0 auto;">Include what the system decides or predicts, who is affected by that decision, and whether it's already deployed or still in development. That's usually enough for a first read on risk tier before the paid consultation even starts.</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <div class="brand" style="color:white;"><span class="mark">§</span> ComplDoc</div>
+      <p class="disclaimer">ComplDoc produces documentation across regulatory compliance, bids and grants, and aviation manuals. ComplDoc does not provide legal advice and is not a law firm, notified body, or regulator.</p>
+    </div>
+    <div>
+      <h4>Site</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Practice areas</h4>
+      <ul>
+        <li><a href="services.html#bids">Bids &amp; grants</a></li>
+        <li><a href="services.html#compliance">Regulatory compliance</a></li>
+        <li><a href="services.html#aviation">Aviation manuals</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="contact.html">Get in touch</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 ComplDoc. Documentation, not legal advice.</span>
+    <span>Reg. (EU) 2024/1689</span>
+  </div>
+</footer>
+
+</body>
+</html>
