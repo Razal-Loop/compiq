@@ -44,7 +44,7 @@ const industries: Industry[] = [
       "Risk assessment mappings for safety management",
     ],
     regulations: ["EASA Part-145 & Part-M guidelines", "FAA operating regulations", "ICAO Annex 19 SMS mandates"],
-    services: ["Flight Operations Manuals (FOM)", "Maintenance Organisation Exposition (MOE)", "SMS manual formation"],
+    services: ["Flight Operations Manuals (F.O.M.)", "Maintenance Organisation Exposition (MOE)", "SMS manual formation"],
   },
   {
     name: "Defense & Strategic Tech",
@@ -169,9 +169,9 @@ export default function IndustriesPage() {
                     Recommended Services
                   </span>
                   <div className="flex flex-wrap gap-1.5">
-                    {ind.services.map((ser) => (
-                      <span key={ser} className="bg-primary/5 text-[10px] font-semibold px-2 py-0.5 rounded-lg text-primary dark:text-primary-light border border-primary/5">
-                        {ser}
+                    {ind.services.map((service) => (
+                      <span key={service} className="bg-primary/5 text-[10px] font-semibold px-2 py-0.5 rounded-lg text-primary dark:text-primary-light border border-primary/5">
+                        {service}
                       </span>
                     ))}
                   </div>

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ─── Design Tokens ────────────────────────────────────── */
 @theme {
   --color-primary:       #7C5CFC;
@@ -9,6 +11,12 @@
   --color-dark:          #0B0F1A;
   --color-ivory:         #F8F6F0;
   --color-gray-muted:    #6B7280;
+  
+  --color-text-heading:  var(--text-heading);
+  --color-text-body:     var(--text-body);
+  --color-text-muted:    var(--text-muted);
+  --color-text-subtle:   var(--text-subtle);
+
   --font-serif:          var(--font-fraunces), Georgia, serif;
   --font-sans:           var(--font-inter), system-ui, sans-serif;
   --font-mono:           var(--font-ibm-plex-mono), "Courier New", monospace;

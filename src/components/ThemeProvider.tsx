@@ -18,16 +18,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as Theme;
     const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const activeTheme = savedTheme || (systemPrefersDark ? "dark" : "light");
     
-    if (savedTheme) {
-      setTheme(savedTheme);
-      document.documentElement.classList.toggle("dark", savedTheme === "dark");
-    } else if (systemPrefersDark) {
-      setTheme("dark");
-      document.documentElement.classList.add("dark");
-    }
+    document.documentElement.classList.toggle("dark", activeTheme === "dark");
     
-    setMounted(true);
+    // Defer state updates to avoid synchronous setState within useEffect
+    setTimeout(() => {
+      setTheme(activeTheme);
+      setMounted(true);
+    }, 0);
   }, []);
 
   const toggleTheme = () => {
