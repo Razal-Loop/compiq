@@ -85,6 +85,11 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Credit */}
+        <div className="mt-6 border-t border-white/5 pt-4 text-center text-[10px] font-mono text-white/40">
+          developed by Razal Ali , For development services <a href="https://webaxissolutions.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">https://webaxissolutions.com</a>
+        </div>
+
       </div>
     </footer>
   );
