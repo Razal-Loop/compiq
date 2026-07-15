@@ -1,188 +1,191 @@
 "use client";
 
-import { ShieldAlert, Award, FileText, ArrowRight, Sparkles } from "lucide-react";
+import { Shield, Award, FileText, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useState } from "react";
 
 interface TimelineStep {
   num: string;
   title: string;
   desc: string;
+  deliverables: string[];
 }
 
 const steps: TimelineStep[] = [
   {
     num: "01",
-    title: "Discovery & Intake",
-    desc: "We review the system capabilities, target market, and upcoming regulatory audits or submission deadlines.",
+    title: "Discovery & Technical Intake",
+    desc: "We review the system capabilities, data flow models, and target market to map out upcoming regulatory obligations or submission deadlines.",
+    deliverables: ["Initial applicability log", "Timeline roadmap schedule"]
   },
   {
     num: "02",
     title: "Classification Analysis",
-    desc: "We run a systematic applicability check (e.g. EU AI Act Annex III categories) to verify the exact risk tier and obligations.",
+    desc: "We perform a systematic check against target legislative clauses (e.g. EU AI Act Annex III) to lock in the exact risk classification.",
+    deliverables: ["Classification memo", "Statutory obligations register"]
   },
   {
     num: "03",
-    title: "Scoping & Gap Analysis",
-    desc: "We map out existing technical assets against what is required, producing a custom compliance matrix and fixed quote.",
+    title: "Scoping & Gap Mapping",
+    desc: "We inspect your existing technical assets, identifying delta parameters between current evidence and auditor expectations.",
+    deliverables: ["Technical gap analysis report", "Fixed-price contract schedule"]
   },
   {
     num: "04",
-    title: "Technical Drafting",
-    desc: "We draft the files chapter by chapter, converting raw technical parameters (architectures, datasets) into structured evidence.",
+    title: "Technical Writing & Drafting",
+    desc: "We write the files section-by-section, translating raw technical data into structured, cited regulatory evidence.",
+    deliverables: ["Draft technical files", "Citations bibliography database"]
   },
   {
     num: "05",
-    title: "Revision & QA Checkpoints",
-    desc: "We run iterative review checkpoints with your technical team to ensure client accuracy matches regulatory standards.",
-  },
-  {
-    num: "06",
-    title: "Final Delivery",
-    desc: "We deliver the completed, cited, audit-ready compliance packages, RFP schedules, or operating manuals.",
-  },
-  {
-    num: "07",
-    title: "Ongoing Maintenance",
-    desc: "For systems that undergo continuous retraining or manual revisions, we transition updates onto a maintenance plan.",
-  },
+    title: "Mock Review & Audit",
+    desc: "We run a secondary integrity audit of the compiled documents, testing each evidence claim against primary legislation.",
+    deliverables: ["Mock audit finding log", "Dossier sign-off memo"]
+  }
 ];
 
 export default function AboutPage() {
-  const processRef = useRef(null);
-  const inViewProcess = useInView(processRef, { once: true, margin: "-60px" });
+  const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <div className="relative overflow-hidden">
-      {/* ── Header ─────────────────────────────────────── */}
-      <section className="relative pt-24 pb-16 md:pt-32 md:pb-24 texture-noise border-b border-border">
-        {/* Glow */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl" />
-        
+    <div className="relative bg-white dark:bg-[#0B0B0F] transition-colors duration-300">
+      
+      {/* ── 1. HEADER SECTION ── */}
+      <section className="relative pt-24 pb-16 sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 border-b border-border blueprint-grid blueprint-grid-fine">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl space-y-6">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-              <span className="badge-primary inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono font-bold">
-                <Sparkles className="w-3.5 h-3.5" /> Our Philosophy
-              </span>
-            </motion.div>
+          <div className="max-w-4xl space-y-5 sm:space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 font-mono text-[10px] tracking-widest uppercase text-primary dark:text-[#7C4DFF] bg-primary/5 border border-primary/10">
+              PRACTICE OVERVIEW
+            </div>
             
-            <motion.h1 
-              initial={{ opacity: 0, y: 15 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.1, duration: 0.5 }}
-              className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1]"
-            >
-              We translate engineering into <span className="gradient-text">compliance evidence.</span>
-            </motion.h1>
+            <h1 className="font-serif font-light tracking-tight text-foreground leading-[1.1]" style={{ fontSize: 'var(--text-h1)' }}>
+              Bridging the gap between{" "}
+              <span className="font-normal italic">engineering</span> and <span className="font-normal italic">regulation.</span>
+            </h1>
             
-            <motion.p 
-              initial={{ opacity: 0, y: 15 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="text-lg text-text-body leading-relaxed max-w-2xl"
-            >
-              ComplDoc was founded to bridge the gap between technical engineering teams and regulatory auditors. We are technical writers, systems analysts, and compliance specialists who understand how to structure a winning argument.
-            </motion.p>
+            <p className="font-sans text-base sm:text-lg text-text-body leading-relaxed max-w-2xl">
+              ComplDoc was established to address the critical translation gap between technical product teams and compliance auditors. We are systems analysts, technical writers, and regulatory specialists who write documentation that regulators accept without pushback.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ── Principles ─────────────────────────────────── */}
-      <section className="py-24 md:py-32 bg-background">
+      {/* ── 2. PRINCIPLES SECTION (3 Columns, Enterprise Layout) ── */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-[#0B0B0F] text-foreground border-b border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <div className="max-w-3xl mb-10 sm:mb-14 lg:mb-16 space-y-3 sm:space-y-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold">
+              OUR GUIDING PRINCIPLES
+            </span>
+            <h2 className="font-serif font-light text-foreground tracking-tight" style={{ fontSize: 'var(--text-h2)' }}>
+              Audit-ready output built from primary sources.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border border border-border">
             {[
               { 
                 icon: FileText, 
-                title: "Primary Source Citation", 
-                desc: "We don't use generic templates. Every document is structured based directly on the primary text of the regulation, RFP, or aviation standard." 
+                title: "Primary Source Citations", 
+                desc: "We do not rely on generic fill-in-the-blank templates. Every technical dossier is drafted and structured directly from the primary statutory text of target legislations or bidding briefs." 
               },
               { 
-                icon: ShieldAlert, 
-                title: "Auditor-first Structure", 
-                desc: "Regulators don't want to read marketing fluff. They want clear, declarative, risk-quantified statements. We write for the person grading the paper." 
+                icon: Shield, 
+                title: "Auditor-First Structure", 
+                desc: "Regulators require clear, declarative, and evidence-backed assertions. We write documents specifically organized to make it easy for auditing teams to locate required proofs." 
               },
               { 
                 icon: Award, 
                 title: "Deep Technical Literacy", 
-                desc: "From neural network parameters to aeronautical maintenance schedules, we speak the language of your engineers to minimize their time spent explaining." 
+                desc: "We speak the language of engineering. From safety control loops to model checkpoints and data lineage pipelines, we work directly from logs and technical briefs." 
               }
-            ].map((principle, idx) => (
-              <motion.div 
-                key={principle.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ delay: idx * 0.15, duration: 0.5 }}
-                className="bg-card border border-border p-8 rounded-card shadow-premium"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
-                  <principle.icon className="w-6 h-6 text-primary dark:text-primary-light" />
+            ].map((principle) => {
+              const IconComp = principle.icon;
+              return (
+                <div 
+                  key={principle.title}
+                  className="bg-white dark:bg-[#18181F] p-6 sm:p-8 space-y-5 sm:space-y-6 hover:bg-[#F7F7FA] dark:hover:bg-[#111117] transition-colors duration-300 min-h-[260px] sm:min-h-[300px] flex flex-col justify-between"
+                >
+                  <div className="space-y-4">
+                    <div className="p-2 border border-border w-fit bg-white">
+                      <IconComp className="w-5 h-5 text-primary" />
+                    </div>
+                    <h3 className="font-serif text-xl font-normal text-foreground">{principle.title}</h3>
+                    <p className="font-sans text-xs text-text-muted leading-relaxed">{principle.desc}</p>
+                  </div>
                 </div>
-                <h3 className="font-serif text-xl font-bold text-foreground mb-3">{principle.title}</h3>
-                <p className="text-sm text-text-body leading-relaxed">{principle.desc}</p>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* ── Process Timeline ───────────────────────────── */}
-      <section ref={processRef} className="py-24 md:py-32 border-t border-border bg-card">
+      {/* ── 3. DETAILED METHODOLOGY (Timeline style) ── */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-[#111117] text-white relative">
+        <div className="absolute inset-0 blueprint-grid opacity-[0.02] pointer-events-none" />
+        
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
             
-            {/* Sticky Header */}
-            <div className="lg:col-span-4 lg:sticky lg:top-32 self-start space-y-6">
-              <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-primary block">
-                Methodology
+            {/* Left Column */}
+            <div className="lg:col-span-5 space-y-5 sm:space-y-6">
+              <span className="font-mono text-xs uppercase tracking-widest text-[#7C4DFF] font-semibold">
+                DRAFTING CYCLE
               </span>
-              <h2 className="font-serif text-4xl font-bold text-foreground">
-                How we deliver.
+              <h2 className="font-serif font-light text-white tracking-tight leading-tight" style={{ fontSize: 'var(--text-h2)' }}>
+                Our systematic documentation lifecycle.
               </h2>
-              <p className="text-sm text-text-body leading-relaxed">
-                A predictable, systematic process designed to produce audit-ready documentation with minimal disruption to your core operations.
+              <p className="font-sans text-xs text-[#E4E4EB] leading-relaxed max-w-md">
+                We embed within your sprint schedules or design meetings to extract necessary system specifications, delivering complete files on agreed milestones.
               </p>
-              <Link
-                href="/contact"
-                className="btn-primary inline-flex items-center gap-2 text-sm font-semibold py-3 px-6 rounded-btn group mt-4"
-              >
-                Initiate Project
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </Link>
+              <div className="pt-2 sm:pt-4">
+                <Link
+                  href="/contact"
+                  className="btn-primary w-full sm:w-auto px-6 text-xs font-semibold uppercase tracking-wider items-center gap-2"
+                >
+                  Initiate Engagement
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
 
-            {/* Timeline Steps */}
-            <div className="lg:col-span-8 relative">
-              {/* Vertical line */}
-              <div className="absolute top-4 bottom-4 left-[28px] w-[2px] bg-border/60 hidden md:block" />
-              
-              <div className="space-y-12 relative">
-                {steps.map((step, index) => (
-                  <motion.div 
+            {/* Right Column: Timeline */}
+            <div className="lg:col-span-7 pl-4 sm:pl-6 border-l border-white/10 space-y-6 sm:space-y-8">
+              {steps.map((step, idx) => {
+                const isActive = activeStep === idx;
+                return (
+                  <div 
                     key={step.num}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={inViewProcess ? { opacity: 1, x: 0 } : {}}
-                    transition={{ delay: index * 0.1, duration: 0.5 }}
-                    className="relative flex flex-col md:flex-row gap-6 md:gap-12"
+                    onClick={() => setActiveStep(idx)}
+                    className={`cursor-pointer p-6 border transition-all duration-300 ${
+                      isActive 
+                        ? "bg-[#18181F] border-[#7C4DFF] active-glow" 
+                        : "bg-transparent border-transparent hover:bg-[#18181F]/50 hover:border-white/5"
+                    }`}
                   >
-                    {/* Number Indicator */}
-                    <div className="flex items-center gap-4 md:block shrink-0">
-                      <div className="w-14 h-14 rounded-full bg-background border-2 border-primary/20 flex items-center justify-center font-mono font-bold text-primary dark:text-primary-light text-lg z-10 shadow-sm relative">
-                        {step.num}
-                      </div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-mono text-xs text-[#7C4DFF] font-semibold">PHASE {step.num}</span>
+                      {isActive && <span className="font-mono text-[9px] text-white bg-white/10 px-2 py-0.5">ACTIVE WORKFLOW</span>}
                     </div>
+                    <h3 className="font-serif text-lg font-normal text-white mb-2">{step.title}</h3>
+                    <p className="font-sans text-xs text-white/75 leading-relaxed">{step.desc}</p>
                     
-                    {/* Content */}
-                    <div className="bg-background border border-border p-6 rounded-card shadow-premium card-lift flex-1">
-                      <h3 className="font-serif text-xl font-bold text-foreground mb-3">{step.title}</h3>
-                      <p className="text-sm text-text-body leading-relaxed">{step.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+                    {isActive && (
+                      <div className="mt-4 pt-4 border-t border-white/5 space-y-2">
+                        <span className="font-mono text-[9px] text-white/55 uppercase block">PHASE DELIVERABLES:</span>
+                        <div className="flex flex-wrap gap-2">
+                          {step.deliverables.map((del) => (
+                            <span key={del} className="font-mono text-[10px] bg-white/5 border border-white/10 px-2.5 py-1 text-white">
+                              {del}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
           </div>

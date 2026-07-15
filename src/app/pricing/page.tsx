@@ -116,17 +116,17 @@ export default function PricingPage() {
   const [billingPeriod, setBillingPeriod] = useState<"onetime" | "retainer">("onetime");
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-16 sm:py-20 lg:py-24 sm:px-6 lg:px-8">
       
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
         <span className="font-mono text-xs font-semibold uppercase tracking-widest text-primary dark:text-primary-light">
           Practice Pricing
         </span>
-        <h1 className="font-serif text-4xl font-bold tracking-tight text-dark dark:text-white sm:text-5xl">
+        <h1 className="font-serif font-bold tracking-tight text-dark dark:text-white" style={{ fontSize: 'var(--text-h1)' }}>
           Authoritative compliance, predictable rates.
         </h1>
-        <p className="text-base text-gray-muted leading-relaxed">
+        <p className="text-base text-text-muted leading-relaxed">
           Select standard document packages designed directly around EU AI Act Annex IV parameters, or choose custom scopes for enterprise systems.
         </p>
 
@@ -138,7 +138,7 @@ export default function PricingPage() {
               className={`text-xs font-semibold px-4 py-1.5 rounded-full transition-all ${
                 billingPeriod === "onetime"
                   ? "bg-primary text-white shadow-sm"
-                  : "text-gray-muted hover:text-dark dark:hover:text-white"
+                  : "text-text-muted hover:text-dark dark:hover:text-white"
               }`}
             >
               One-Time Projects
@@ -148,7 +148,7 @@ export default function PricingPage() {
               className={`text-xs font-semibold px-4 py-1.5 rounded-full transition-all ${
                 billingPeriod === "retainer"
                   ? "bg-primary text-white shadow-sm"
-                  : "text-gray-muted hover:text-dark dark:hover:text-white"
+                  : "text-text-muted hover:text-dark dark:hover:text-white"
               }`}
             >
               Compliance Retainers
@@ -158,7 +158,7 @@ export default function PricingPage() {
       </div>
 
       {/* Pricing Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch mb-24">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch mb-16 sm:mb-20 lg:mb-24">
         {tiers.map((tier) => {
           // Adjust price display for retainer mode
           let displayPrice = tier.price;
@@ -198,7 +198,7 @@ export default function PricingPage() {
                   <h3 className="font-serif text-lg font-bold text-dark dark:text-white">
                     {tier.name}
                   </h3>
-                  <p className="text-xs text-gray-muted leading-relaxed mt-1 min-h-[32px]">
+                  <p className="text-xs text-text-muted leading-relaxed mt-1 min-h-[32px]">
                     {tier.tagline}
                   </p>
                 </div>
@@ -207,12 +207,12 @@ export default function PricingPage() {
                   <span className="font-serif text-3xl font-extrabold text-dark dark:text-white">
                     {displayPrice}
                   </span>
-                  <span className="text-xs font-mono text-gray-muted">
+                  <span className="text-xs font-mono text-text-muted">
                     /{displayPeriod}
                   </span>
                 </div>
 
-                <ul className="space-y-3.5 text-xs text-gray-muted leading-relaxed">
+                <ul className="space-y-3.5 text-xs text-text-muted leading-relaxed">
                   {tier.features.map((feat) => (
                     <li key={feat} className="flex gap-2.5 items-start">
                       <Check className="w-3.5 h-3.5 text-primary dark:text-primary-light shrink-0 mt-0.5" />
@@ -243,15 +243,15 @@ export default function PricingPage() {
       {/* Comparison Table */}
       <div className="space-y-8 max-w-5xl mx-auto">
         <div className="text-center space-y-2">
-          <h2 className="font-serif text-2xl font-bold text-dark dark:text-white">
+          <h2 className="font-serif font-bold text-dark dark:text-white" style={{ fontSize: 'var(--text-h2)' }}>
             Feature Comparison Matrix
           </h2>
-          <p className="text-sm text-gray-muted">
+          <p className="text-sm text-text-muted">
             Detailed breakdown of deliverables and service boundaries across tiers.
           </p>
         </div>
 
-        <div className="border border-border/60 rounded-card overflow-hidden bg-white dark:bg-card shadow-premium overflow-x-auto no-scrollbar">
+        <div className="border border-border/60 rounded-card overflow-hidden bg-white dark:bg-card shadow-premium overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="border-b border-border/60 bg-muted/40 font-serif text-sm text-dark dark:text-white">
@@ -262,7 +262,7 @@ export default function PricingPage() {
                 <th className="p-5 font-semibold">Enterprise</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/40 text-xs text-gray-muted">
+            <tbody className="divide-y divide-border/40 text-xs text-text-muted">
               {comparisonData.map((category) => (
                 <React.Fragment key={category.title}>
                   <tr className="bg-muted/10 font-mono text-[10px] uppercase tracking-wider text-dark dark:text-white">
@@ -276,7 +276,7 @@ export default function PricingPage() {
                         {row.name}
                         {row.hint && (
                           <div className="group relative">
-                            <Info className="w-3.5 h-3.5 text-gray-muted hover:text-dark dark:hover:text-white cursor-pointer" />
+                            <Info className="w-3.5 h-3.5 text-text-muted hover:text-dark dark:hover:text-white cursor-pointer" />
                             <span className="absolute left-6 top-1/2 -translate-y-1/2 hidden group-hover:block w-48 p-2 bg-dark text-white dark:bg-white dark:text-dark text-[10px] leading-normal rounded-lg shadow-md z-10">
                               {row.hint}
                             </span>

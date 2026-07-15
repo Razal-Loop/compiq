@@ -97,7 +97,7 @@ export default function ResourcesPage() {
         <span className="font-mono text-xs font-semibold uppercase tracking-widest text-primary">
           Knowledge Center
         </span>
-        <h1 className="font-serif text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+        <h1 className="font-serif font-bold tracking-tight text-foreground sm:text-5xl" style={{ fontSize: 'var(--text-h1)' }}>
           Regulatory updates &amp; structural guides.
         </h1>
         <p className="text-base text-text-body leading-relaxed">
@@ -142,7 +142,7 @@ export default function ResourcesPage() {
           {filteredArticles.length > 0 ? (
             <motion.div 
               layout
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8"
             >
               {filteredArticles.map((art) => (
                 <motion.article

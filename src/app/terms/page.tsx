@@ -12,15 +12,15 @@ export default function TermsPage() {
         <span className="font-mono text-xs font-semibold uppercase tracking-widest text-primary dark:text-primary-light">
           ComplDoc Briefing — Section 02
         </span>
-        <h1 className="font-serif text-4xl font-bold tracking-tight text-dark dark:text-white sm:text-5xl">
+        <h1 className="font-serif font-bold tracking-tight text-dark dark:text-white" style={{ fontSize: 'var(--text-h1)' }}>
           Terms of Engagement
         </h1>
-        <p className="text-xs font-mono text-gray-muted">
+        <p className="text-xs font-mono text-text-muted">
           Last revised: July 13, 2026 | Document Ref: CD-TOS-ENG-2026-V1
         </p>
       </div>
 
-      <div className="mt-12 space-y-12 text-sm leading-relaxed text-gray-muted">
+      <div className="mt-12 space-y-12 text-sm leading-relaxed text-text-muted">
         
         {/* Scope of Practice */}
         <section className="space-y-4">

@@ -12,15 +12,15 @@ export default function PrivacyPage() {
         <span className="font-mono text-xs font-semibold uppercase tracking-widest text-primary dark:text-primary-light">
           ComplDoc Briefing — Section 01
         </span>
-        <h1 className="font-serif text-4xl font-bold tracking-tight text-dark dark:text-white sm:text-5xl">
+        <h1 className="font-serif font-bold tracking-tight text-dark dark:text-white" style={{ fontSize: 'var(--text-h1)' }}>
           Privacy &amp; Data Governance Policy
         </h1>
-        <p className="text-xs font-mono text-gray-muted">
+        <p className="text-xs font-mono text-text-muted">
           Last revised: July 13, 2026 | Document Ref: CD-POL-PRV-2026-V1
         </p>
       </div>
 
-      <div className="mt-12 space-y-12 text-sm leading-relaxed text-gray-muted">
+      <div className="mt-12 space-y-12 text-sm leading-relaxed text-text-muted">
         
         {/* Intro */}
         <section className="space-y-4">
@@ -83,9 +83,9 @@ export default function PrivacyPage() {
             For questions about this policy or to request immediate deletion of technical drafts, contact:
           </p>
           <div className="bg-white dark:bg-card border border-border/60 rounded-card p-6 font-mono text-xs space-y-1.5">
-            <p><span className="text-gray-muted">Entity:</span> ComplDoc Practice Group</p>
-            <p><span className="text-gray-muted">Director:</span> Sarshar Jehangir</p>
-            <p><span className="text-gray-muted">Intake Email:</span> sarsharjehangir@gmail.com</p>
+            <p><span className="text-text-muted">Entity:</span> ComplDoc Practice Group</p>
+            <p><span className="text-text-muted">Director:</span> Sarshar Jehangir</p>
+            <p><span className="text-text-muted">Intake Email:</span> sarsharjehangir@gmail.com</p>
           </div>
         </section>
 

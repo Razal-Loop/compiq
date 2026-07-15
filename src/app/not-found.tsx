@@ -24,7 +24,7 @@ export default function NotFound() {
           <h1 className="font-serif text-3xl font-bold tracking-tight sm:text-4xl text-dark dark:text-white">
             Document Not Found
           </h1>
-          <p className="text-base text-gray-muted leading-relaxed">
+          <p className="text-base text-text-muted leading-relaxed">
             The page or compliance brief you are looking for does not exist, has been moved, or is restricted under regulatory clearance.
           </p>
         </div>

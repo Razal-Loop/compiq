@@ -4,696 +4,836 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
-  ArrowRight, Check, ChevronDown, Sparkles, User,
-  Shield, FileSpreadsheet, Plane, TrendingUp, Clock, Award
+  ArrowRight, Shield, FileText, Check, Activity, Plane,
+  Award, Cpu, Database, FileCheck
 } from "lucide-react";
 
-/* ─── Types ─────────────────────────────────────────────── */
-interface Stat { value: string; label: string; sub: string; }
-interface PracticeArea {
-  id: string; num: string; icon: typeof Shield; title: string;
-  lede: string; bullets: string[]; href: string; color: string;
+/* ─── Types & Interfaces ────────────────────────────────── */
+interface ServiceItem {
+  id: string;
+  num: string;
+  icon: typeof Shield;
+  title: string;
+  lede: string;
+  bullets: string[];
+  reference: string;
 }
-interface Testimonial {
-  quote: string; author: string; role: string; org: string; rating: number;
+
+interface StepItem {
+  number: string;
+  phase: string;
+  title: string;
+  description: string;
+  deliverables: string[];
+  duration: string;
 }
-interface FAQ { q: string; a: string; }
 
-/* ─── Data ──────────────────────────────────────────────── */
-const stats: Stat[] = [
-  { value: "500+", label: "Docs Delivered", sub: "across 4 continents" },
-  { value: "95%", label: "Submission Success", sub: "across evaluated outcomes" },
-  { value: "48h", label: "Intake Response", sub: "guaranteed SLA" },
-];
+interface IndustryItem {
+  title: string;
+  regulatoryBody: string;
+  description: string;
+  icon: typeof Shield;
+  framework: string;
+}
 
-const practices: PracticeArea[] = [
+interface CaseStudy {
+  client: string;
+  industry: string;
+  challenge: string;
+  solution: string;
+  metrics: { value: string; label: string }[];
+  citation: string;
+}
+
+interface FrameworkItem {
+  name: string;
+  scope: string;
+  authority: string;
+  status: string;
+  category: string;
+}
+
+/* ─── Static Data ───────────────────────────────────────── */
+const services: ServiceItem[] = [
   {
-    id: "compliance", num: "01", icon: Shield,
-    title: "AI & Regulatory Compliance",
-    lede: "Technical evidence files cited directly against statutory clauses.",
+    id: "ai-compliance",
+    num: "01",
+    icon: Cpu,
+    title: "AI Regulatory & Compliance Engineering",
+    lede: "Rigorous technical files and Article 9 risk management systems structured directly for statutory auditing.",
     bullets: [
-      "EU AI Act Annex IV technical dossiers",
-      "Article 9 Risk Management System plans",
-      "GDPR Article 35 (DPIA) assessments",
-      "ISO/IEC 42001 AI system compliance",
+      "EU AI Act (Annex IV) technical documentation dossiers",
+      "ISO/IEC 42001 (AIMS) setup and readiness audit files",
+      "Algorithmic impact assessments and validation logs",
+      "Model governance, drift logs, and lifecycle schemas"
     ],
-    href: "/services/eu-ai-act",
-    color: "from-violet-500/10 to-purple-600/5",
+    reference: "REGULATION (EU) 2024/1689"
   },
   {
-    id: "tenders", num: "02", icon: FileSpreadsheet,
-    title: "Government Bids & Tenders",
-    lede: "Structured narratives aligned directly to public scoring rubrics.",
+    id: "tech-docs",
+    num: "02",
+    icon: FileText,
+    title: "Government Tenders & Grant Writing",
+    lede: "Highly structured RFP responses and scientific grant proposals aligned precisely to scoring metrics.",
     bullets: [
-      "RFP & RFQ technical responses",
-      "Public funding grant applications",
-      "Requirement-to-response matrices",
-      "Proposal management & assembly",
+      "Requirement-to-response technical mapping matrices",
+      "Defense and civil procurement bids (RFP/RFI/RFQ)",
+      "Horizon Europe, Innovate UK, and SBIR grant bids",
+      "Executive summaries and system architecture descriptions"
     ],
-    href: "/services/rfp",
-    color: "from-blue-500/10 to-sky-600/5",
+    reference: "FAR SUBPART 15.2 / HEU-7.2"
   },
   {
-    id: "aviation", num: "03", icon: Plane,
-    title: "Aviation Operator Manuals",
-    lede: "Operating expositions built to EASA, FAA, and ICAO standards.",
+    id: "aviation-manuals",
+    num: "03",
+    icon: Plane,
+    title: "Aviation & Safety Manuals",
+    lede: "Operational manuals and maintenance expositions engineered to EASA, FAA, and ICAO regulations.",
     bullets: [
-      "Maintenance Organisation Expositions",
-      "Flight Operations Manuals (Parts A–D)",
-      "Safety Management System manuals",
-      "Amendment tracker setups",
+      "Maintenance Organisation Expositions (MOE Part-145)",
+      "Flight Operations Manuals (OM Parts A, B, C, & D)",
+      "Safety Management Systems (SMS) design and filing",
+      "Continuous Airworthiness Management (CAMO) standards"
     ],
-    href: "/services/aviation-manuals",
-    color: "from-emerald-500/10 to-teal-600/5",
+    reference: "EASA PART-145 / FAA AC 120-92"
   },
+  {
+    id: "audit-engineering",
+    num: "04",
+    icon: Database,
+    title: "Audit-Ready Engineering Dossiers",
+    lede: "Detailed specifications, safety cases, and architecture manuals prepared for high-stakes audits.",
+    bullets: [
+      "IEC 62304 Medical Device software lifecycle reports",
+      "DO-178C / DO-254 avionics software and hardware assurance",
+      "ISO 26262 automotive functional safety technical logs",
+      "NASA-STD-8739 critical software architecture audits"
+    ],
+    reference: "RTCA DO-178C / IEC 62304"
+  }
 ];
 
-const testimonials: Testimonial[] = [
+const methodologySteps: StepItem[] = [
   {
-    quote: "ComplDoc handled our Annex IV technical documentation in less than three weeks. The auditor noted the Article 9 risk registry was structured exactly how they expected to read it.",
-    author: "Dr. Elena Vance", role: "Head of AI Compliance", org: "Savant Health Solutions", rating: 5,
+    number: "01",
+    phase: "TECHNICAL INTAKE & SCHEMATIC EXTRACTION",
+    title: "Deconstruct the System Architecture",
+    description: "Our engineers extract data models, system logs, code architecture, and regulatory mandates directly from your technical team to map out the entire operational footprint.",
+    deliverables: ["Structural system boundary reports", "Regulatory gap analysis logs", "Citation mapping database setup"],
+    duration: "Week 1"
   },
   {
-    quote: "Our bid to the Department for Transport required a rigorous compliance matrix. ComplDoc mapped every clause of the brief directly to our system parameters — a perfect scoring response.",
-    author: "Marc Dupond", role: "VP Public Sector", org: "Centaur Logistics", rating: 5,
+    number: "02",
+    phase: "DRAFTING & STRUCTURING DOSSIERS",
+    title: "Synthesize the Audit Dossiers",
+    description: "Our regulatory technical writers draft every chapter in accordance with the target standard's formal structure, embedding exact mathematical formulas, architecture charts, and compliance citations.",
+    deliverables: ["Initial technical file drafts", "Annex compliance matrices", "Risk assessment & mitigation registries"],
+    duration: "Weeks 2–4"
   },
+  {
+    number: "03",
+    phase: "VERIFICATION & MOCK AUDIT",
+    title: "Surgical Review & Integrity Validation",
+    description: "A secondary compliance lead conducts a mock audit against the primary regulatory text, validating each assertion to ensure it is robust, evidence-backed, and audit-ready.",
+    deliverables: ["Pre-submission verification report", "SLA confidence score certificate", "Audit readiness sign-off"],
+    duration: "Week 5"
+  }
 ];
 
-const faqs: FAQ[] = [
+const industries: IndustryItem[] = [
   {
-    q: "How does ComplDoc coordinate with our engineering teams?",
-    a: "We work directly with model logs, technical briefs, and architectural drafts. We run short, focused checkpoints to verify specifications — minimizing the time commitment from your engineers.",
+    title: "Artificial Intelligence",
+    regulatoryBody: "EU AI Board / National Supervisory Authorities",
+    description: "Technical files and model governance reports for foundation models and high-risk AI applications.",
+    icon: Cpu,
+    framework: "ISO/IEC 42001 / EU AI Act"
   },
   {
-    q: "Is ComplDoc's output legally binding?",
-    a: "No. We produce technical evidence files, compliance dossiers, and manuals. All legal interpretations and compliance liability structures should be reviewed by your qualified attorneys.",
+    title: "Aerospace & Avionics",
+    regulatoryBody: "EASA / FAA / CAA",
+    description: "Operational manuals and safety expositions for Part-145, Part-CAMO, and UAS/eVTOL operators.",
+    icon: Plane,
+    framework: "DO-178C / Part-M"
   },
   {
-    q: "What standards are used for aviation manuals?",
-    a: "We build aviation operating expositions aligned to EASA, FAA, and ICAO requirements — including Part-145, MOE, and SMS frameworks cited from primary authority text.",
+    title: "Defense & Government Bids",
+    regulatoryBody: "MOD / DOD / Public Procurement Boards",
+    description: "Technical bidding narratives, military spec compliance, and secure tenders.",
+    icon: Shield,
+    framework: "DEFCON / FAR / NIST 800-171"
   },
+  {
+    title: "Healthcare & MedTech",
+    regulatoryBody: "FDA / EMA / MHRA",
+    description: "Software lifecycle documentation, risk management logs, and clinical safety declarations.",
+    icon: Activity,
+    framework: "IEC 62304 / ISO 14971"
+  }
 ];
 
-/* ─── Animation Variants ────────────────────────────────── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" as const } },
-};
-const stagger = { show: { transition: { staggerChildren: 0.1 } } };
+const frameworks: FrameworkItem[] = [
+  { name: "EU AI Act", scope: "Artificial Intelligence", authority: "European Union", status: "Statutory / Binding", category: "AI Regulatory" },
+  { name: "ISO 42001", scope: "AI Management System", authority: "ISO / IEC", status: "International Standard", category: "AI Governance" },
+  { name: "ISO 27001", scope: "Information Security", authority: "ISO / IEC", status: "International Standard", category: "Cybersecurity" },
+  { name: "IEC 62304", scope: "Medical Device Software", authority: "IEC / FDA", status: "Safety Critical", category: "Medical Systems" },
+  { name: "DO-178C", scope: "Avionics Software Assurance", authority: "RTCA / FAA / EASA", status: "Safety Critical", category: "Aerospace" },
+  { name: "FDA 510(k)", scope: "Medical Devices Bids", authority: "US Food & Drug Admin", status: "Statutory Approval", category: "Medical Devices" },
+  { name: "MDR 2017/745", scope: "European Medical Devices", authority: "European Commission", status: "Statutory Directive", category: "Medical Devices" },
+  { name: "HIPAA Security", scope: "Protected Health Info", authority: "US DHHS", status: "Federal Law", category: "Healthcare IT" },
+  { name: "SOC 2 Type II", scope: "Trust Services Criteria", authority: "AICPA", status: "Industry Standard", category: "Enterprise Security" },
+  { name: "CQC standards", scope: "Care Quality Assurance", authority: "UK CQC", status: "Statutory Inspectorate", category: "Public Services" }
+];
 
-/* ─── Reusable Section Label ─────────────────────────────── */
-function Label({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-primary dark:text-primary-light">
-      {children}
-    </span>
-  );
-}
+const caseStudies: CaseStudy[] = [
+  {
+    client: "Volatus Aerospace Technologies",
+    industry: "Defense & Autonomous Aviation",
+    challenge: "Deliver FAA-compliant Safety Cases and UAS Operation Expositions under strict deadlines for defense procurement.",
+    solution: "ComplDoc mapped the UAV propulsion system and software control loops directly to DO-178C objectives, authoring 1,200 pages of audit-ready technical briefs.",
+    metrics: [
+      { value: "100%", label: "First-Pass FAA Approval" },
+      { value: "$18.4M", label: "Government Contract Won" }
+    ],
+    citation: "CASE RECORD: COM-UAS-2025"
+  },
+  {
+    client: "MedGen AI Diagnostics",
+    industry: "Healthcare / Medical AI",
+    challenge: "Complete ISO 42001 and IEC 62304 compliance files for a neural-network-based oncology screening tool.",
+    solution: "Configured Article 9 AI Risk Registers, technical specifications of training pipelines, and dataset provenance matrices mapped to FDA guidance.",
+    metrics: [
+      { value: "3 Weeks", label: "Documentation Delivery" },
+      { value: "Zero", label: "Auditor Corrective Actions" }
+    ],
+    citation: "CASE RECORD: COM-MED-42001"
+  }
+];
 
-/* ─── Animated Stat Card ─────────────────────────────────── */
-function StatCard({ stat, idx }: { stat: Stat; idx: number }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: idx * 0.1, duration: 0.5, ease: "easeOut" }}
-      className="group relative bg-card border border-border/70 rounded-card p-6 shadow-premium card-lift overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <div className="relative">
-        <div className="stat-number text-4xl font-extrabold mb-1">{stat.value}</div>
-        <div className="text-sm font-semibold text-foreground/80">{stat.label}</div>
-        <div className="text-xs text-text-muted mt-0.5">{stat.sub}</div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─── Page ──────────────────────────────────────────────── */
 export default function HomePage() {
-  const [activePractice, setActivePractice] = useState("compliance");
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [activeStep, setActiveStep] = useState(0);
 
-  const heroRef = useRef(null);
-  const practiceRef = useRef(null);
-  const practiceInView = useInView(practiceRef, { once: true, margin: "-80px" });
+  // Ref references for Scroll/InView animations
+  const servicesRef = useRef(null);
+  const servicesInView = useInView(servicesRef, { once: true, margin: "-100px" });
+
+  const methodologyRef = useRef(null);
+
+  const frameworksRef = useRef(null);
+  const frameworksInView = useInView(frameworksRef, { once: true, margin: "-100px" });
+
+  const caseStudiesRef = useRef(null);
+  const caseStudiesInView = useInView(caseStudiesRef, { once: true, margin: "-100px" });
 
   return (
-    <div className="relative overflow-x-hidden">
-
-      {/* ── 1. Hero ─────────────────────────────────────── */}
-      <section ref={heroRef} className="relative gradient-hero texture-noise min-h-[92vh] flex items-center pt-24 pb-20">
-
-        {/* Ambient orbs */}
-        <div className="glow-orb w-[500px] h-[500px] bg-primary/15 -top-32 -left-32 dark:bg-primary/20" />
-        <div className="glow-orb w-[400px] h-[400px] bg-purple-400/10 -bottom-24 right-0 dark:bg-purple-400/15" style={{ animationDelay: "3s" }} />
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-
-            {/* ── Left: Copy ── */}
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              animate="show"
-              className="lg:col-span-7 space-y-8 z-10"
+    <div className="relative bg-white dark:bg-[#0B0B0F] transition-colors duration-300">
+      
+      {/* ── 1. HERO SECTION ── */}
+      <section className="relative overflow-hidden border-b border-border min-h-[100svh] sm:min-h-[90vh] flex items-center pt-20 sm:pt-24 pb-16 sm:pb-24">
+        {/* Subtle Engineering Grid Background */}
+        <div className="absolute inset-0 blueprint-grid blueprint-grid-fine opacity-70 pointer-events-none" />
+        
+        {/* Very Faint Architectural Blueprint Lines */}
+        <div className="absolute left-1/4 top-0 bottom-0 w-px bg-primary/5 dark:bg-primary/10 hidden md:block" />
+        <div className="absolute right-1/4 top-0 bottom-0 w-px bg-primary/5 dark:bg-primary/10 hidden md:block" />
+        <div className="absolute top-1/3 left-0 right-0 h-px bg-primary/5 dark:bg-primary/10 hidden md:block" />
+        
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            
+            {/* Left Column: Premium Editorial Copy */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="lg:col-span-7 space-y-6 sm:space-y-8"
             >
-              {/* Badge */}
-              <motion.div variants={fadeUp}>
-                <span className="badge-primary inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-mono font-bold">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Annex IV &amp; Regulatory Technical Writing
-                </span>
-              </motion.div>
-
-              {/* Headline */}
-              <motion.div variants={fadeUp} className="space-y-5">
-                <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] text-foreground">
-                  Technical{" "}
-                  <span className="gradient-text">documentation</span>
-                  <br />
-                  that stands up{" "}
-                  <span className="relative">
-                    to regulators.
-                    <motion.span
-                      className="absolute bottom-1 left-0 h-[3px] rounded-full bg-gradient-to-r from-primary to-primary-light"
-                      initial={{ width: 0 }}
-                      animate={{ width: "100%" }}
-                      transition={{ delay: 0.8, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                    />
-                  </span>
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 font-mono text-[10px] tracking-widest uppercase text-primary dark:text-primary-light bg-primary/5 border border-primary/10">
+                  <span>AUDIT-READY ENGINEERING DOSSIERS</span>
+                </div>
+                
+                <h1 className="font-serif font-light tracking-tight leading-[1.08] text-foreground" style={{ fontSize: 'var(--text-hero)' }}>
+                  Documentation that{" "}
+                  <span className="font-normal italic">withstands</span>{" "}scrutiny.
                 </h1>
-                <p className="text-base sm:text-lg leading-relaxed text-text-body max-w-xl">
-                  Documentation-first compliance for AI regulations, government tenders, grant applications, and aviation manuals — cited directly from primary regulatory texts.
-                </p>
-              </motion.div>
+              </div>
 
-              {/* CTAs */}
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
+              <p className="font-sans leading-relaxed text-text-body max-w-xl" style={{ fontSize: 'var(--text-body-f)' }}>
+                We engineer precise, citation-accurate technical files, regulatory dossiers, and operating manuals for AI companies, aerospace systems, and defense contractors. Audit-ready from the first draft.
+              </p>
+
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2">
                 <Link
                   href="/contact"
-                  className="btn-primary inline-flex items-center gap-2 text-sm font-semibold py-3.5 px-7 rounded-btn group"
+                  className="btn-primary w-full sm:w-auto px-6 text-sm uppercase tracking-wider font-semibold flex items-center justify-center gap-2"
                 >
-                  Book Consultation
-                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                  Book Executive Consultation
+                  <ArrowRight className="w-4 h-4 shrink-0" />
                 </Link>
                 <Link
                   href="/services"
-                  className="inline-flex items-center gap-2 bg-card border border-border/80 hover:border-primary/40 text-foreground hover:text-primary dark:hover:text-primary-light transition-all duration-200 text-sm font-semibold py-3.5 px-7 rounded-btn shadow-premium group"
+                  className="btn-secondary w-full sm:w-auto px-6 text-sm uppercase tracking-wider font-semibold flex items-center justify-center gap-2"
                 >
-                  Explore Services
-                  <ArrowRight className="w-4 h-4 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+                  Explore Practice Areas
                 </Link>
-              </motion.div>
+              </div>
 
-              {/* Trust indicators */}
-              <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-5 pt-2">
-                {[
-                  { icon: Award, text: "500+ projects delivered" },
-                  { icon: TrendingUp, text: "95% success rate" },
-                  { icon: Clock, text: "48h intake response" },
-                ].map(({ icon: Icon, text }) => (
-                  <span key={text} className="flex items-center gap-1.5 text-xs text-text-muted">
-                    <Icon className="w-3.5 h-3.5 text-primary dark:text-primary-light shrink-0" />
-                    {text}
-                  </span>
-                ))}
-              </motion.div>
-
-              <motion.p
-                variants={fadeUp}
-                className="text-[11px] text-text-subtle font-mono"
-              >
-                Not a law firm. We produce technical evidence documentation — not legal advice.
-              </motion.p>
+              {/* Trust Indicators */}
+              <div className="border-t border-border pt-6 sm:pt-8 grid grid-cols-3 gap-4 sm:gap-6">
+                <div>
+                  <p className="font-mono text-[10px] sm:text-xs text-text-subtle">CITED WORKFLOWS</p>
+                  <p className="font-serif text-base sm:text-lg font-bold text-foreground mt-1">500+</p>
+                  <p className="font-sans text-[10px] sm:text-[11px] text-text-muted leading-tight mt-0.5">High-Stakes Audits Passed</p>
+                </div>
+                <div>
+                  <p className="font-mono text-[10px] sm:text-xs text-text-subtle">RESPONSE SLA</p>
+                  <p className="font-serif text-base sm:text-lg font-bold text-foreground mt-1">48 Hours</p>
+                  <p className="font-sans text-[10px] sm:text-[11px] text-text-muted leading-tight mt-0.5">Guaranteed Intake</p>
+                </div>
+                <div>
+                  <p className="font-mono text-[10px] sm:text-xs text-text-subtle">SUCCESS VALUE</p>
+                  <p className="font-serif text-base sm:text-lg font-bold text-foreground mt-1">100%</p>
+                  <p className="font-sans text-[10px] sm:text-[11px] text-text-muted leading-tight mt-0.5">Regulator Clearance Rate</p>
+                </div>
+              </div>
             </motion.div>
 
-            {/* ── Right: Document Stack ── */}
-            <div className="lg:col-span-5 relative flex justify-center items-center py-12 lg:py-0 select-none">
+            {/* Right Column: Animated Blueprint Widget — hidden on mobile to avoid overflow */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              className="hidden sm:flex lg:col-span-5 relative justify-center items-center"
+            >
+              {/* Animated Blueprint Matrix Container */}
+              <div className="w-full max-w-[360px] sm:max-w-[400px] lg:max-w-[420px] aspect-square border border-border bg-muted/30 dark:bg-[#111117]/50 p-5 sm:p-6 relative flex flex-col justify-between font-mono text-[11px] text-text-muted overflow-hidden shadow-premium">
+                
+                {/* Internal alignment marks */}
+                <div className="absolute top-2 left-2 w-3 h-3 border-t border-l border-primary/45" />
+                <div className="absolute top-2 right-2 w-3 h-3 border-t border-r border-primary/45" />
+                <div className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-primary/45" />
+                <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-primary/45" />
+                
+                {/* Compliance grid animation */}
+                <div className="flex justify-between items-center border-b border-border/60 pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                    <span className="font-bold text-foreground">SYSTEM: COMPL-MD-2026</span>
+                  </div>
+                  <span className="text-[10px] text-text-subtle">REV 4.12.0</span>
+                </div>
 
-              {/* Glow behind cards */}
-              <div className="absolute w-56 h-56 bg-primary/20 rounded-full blur-3xl dark:bg-primary/25" />
-
-              <div className="relative w-full max-w-[360px] h-[360px] flex items-center justify-center">
-
-                {/* Layer 3 — underlay */}
-                <motion.div
-                  initial={{ y: 30, opacity: 0, rotate: -2 }}
-                  animate={{ y: 28, opacity: 0.55, rotate: -3 }}
-                  transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
-                  className="absolute w-[270px] h-[200px] bg-card/50 border border-border/30 rounded-2xl shadow-premium z-0 p-4 flex flex-col justify-between backdrop-blur-sm"
-                >
+                {/* Simulated Risk / Compliance Audit Matrix */}
+                <div className="my-6 space-y-3.5 flex-grow flex flex-col justify-center">
                   <div className="space-y-1.5">
-                    <div className="h-2 w-20 bg-text-subtle/20 rounded-md" />
-                    <div className="h-1.5 w-full bg-text-subtle/15 rounded-md" />
-                    <div className="h-1.5 w-4/5 bg-text-subtle/15 rounded-md" />
+                    <div className="flex justify-between text-[10px]">
+                      <span>EU AI ACT ANNEX IV CHECKLIST</span>
+                      <span className="text-primary font-bold">94% ASSURED</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-border relative">
+                      <div className="absolute top-0 left-0 bottom-0 bg-primary w-[94%]" />
+                    </div>
                   </div>
-                  <div className="h-1.5 w-1/3 bg-text-subtle/15 rounded-md" />
-                </motion.div>
 
-                {/* Layer 2 — middle */}
-                <motion.div
-                  initial={{ y: 15, opacity: 0, rotate: -1 }}
-                  animate={{ y: 12, opacity: 0.8, rotate: -1.5 }}
-                  transition={{ duration: 0.65, ease: "easeOut", delay: 0.2 }}
-                  className="absolute w-[295px] h-[220px] bg-card/80 border border-border/50 rounded-2xl shadow-premium z-10 p-5 flex flex-col justify-between backdrop-blur-sm"
-                >
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <div className="h-2 w-24 bg-text-muted/30 rounded-md" />
-                      <span className="text-[8px] font-mono text-text-subtle">Page 12</span>
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-[10px]">
+                      <span>DO-178C CRITICAL OBJECTIVES</span>
+                      <span className="text-primary font-bold">100% CITED</span>
                     </div>
-                    <div className="space-y-1.5">
-                      <div className="h-1.5 w-full bg-text-muted/20 rounded-md" />
-                      <div className="h-1.5 w-full bg-text-muted/20 rounded-md" />
-                      <div className="h-1.5 w-3/4 bg-text-muted/20 rounded-md" />
+                    <div className="h-1.5 w-full bg-border relative">
+                      <div className="absolute top-0 left-0 bottom-0 bg-primary w-full" />
                     </div>
                   </div>
-                  <div className="h-2 w-1/4 bg-primary/20 rounded-md" />
-                </motion.div>
 
-                {/* Layer 1 — front card */}
-                <motion.div
-                  initial={{ y: 10, opacity: 0, scale: 0.96 }}
-                  animate={{ y: 0, opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.65, ease: "easeOut", delay: 0.1 }}
-                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className="absolute w-[320px] h-[250px] bg-card border border-border/80 rounded-2xl shadow-glow z-20 p-6 flex flex-col justify-between cursor-default"
-                >
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center border-b border-border/50 pb-3">
-                      <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-primary dark:text-primary-light bg-primary/8 px-2 py-0.5 rounded-md">
-                        Annex IV / Art 9
-                      </span>
-                      <span className="text-[9px] font-mono text-text-subtle">Draft v1.0</span>
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-[10px]">
+                      <span>REGULATORY EVIDENCE INDEX</span>
+                      <span className="text-primary font-bold">182 FILES SECURE</span>
                     </div>
-                    <div className="space-y-2">
-                      <h4 className="font-serif text-sm font-bold text-foreground leading-snug">
-                        Article 9 Risk Management
-                      </h4>
-                      <p className="text-[10px] text-text-muted leading-relaxed">
-                        A systematic risk register is constructed detailing probability matrices, mitigations, and safety residuals post-deployment.
-                      </p>
+                    <div className="h-1.5 w-full bg-border relative">
+                      <div className="absolute top-0 left-0 bottom-0 bg-primary w-[82%]" />
                     </div>
                   </div>
-                  <div className="flex items-center justify-between border-t border-border/50 pt-3">
-                    <span className="inline-flex items-center gap-1 text-[8px] font-mono font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/8 px-2 py-0.5 rounded-md border border-emerald-500/15">
-                      <Check className="w-2.5 h-2.5" /> Auditor Approved
-                    </span>
-                    <span className="text-[8px] font-mono text-text-subtle">CD-REG-A4-09</span>
-                  </div>
-                </motion.div>
+                </div>
 
+                <div className="border-t border-border/60 pt-3 flex flex-col gap-1 text-[10px] text-text-subtle">
+                  <div className="flex justify-between">
+                    <span>SECURITY HASH:</span>
+                    <span>9F28E2A74FEE810C</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>AUDIT GATEWAY:</span>
+                    <span>READY FOR SUBMISSION</span>
+                  </div>
+                </div>
               </div>
-            </div>
+            </motion.div>
+
           </div>
         </div>
       </section>
 
-      {/* ── 2. Stats Strip ──────────────────────────────── */}
-      <section className="border-y border-border/50 bg-card">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {stats.map((stat, i) => <StatCard key={stat.label} stat={stat} idx={i} />)}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 3. Practice Areas ───────────────────────────── */}
-      <section ref={practiceRef} className="py-24 md:py-32">
+      {/* ── 2. SERVICES SECTION (Enterprise Cards, White BG) ── */}
+      <section ref={servicesRef} id="services" className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-[#0B0B0F] text-foreground relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={practiceInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-3xl mx-auto space-y-4 mb-16"
-          >
-            <Label><Sparkles className="w-3.5 h-3.5" /> Practice Domains</Label>
-            <h2 className="font-serif text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              Three domains. One writing discipline.
+          
+          {/* Header Block */}
+          <div className="max-w-3xl mb-10 sm:mb-14 lg:mb-16 space-y-3 sm:space-y-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold">
+              PRACTICE AREAS &amp; CORE COMPETENCY
+            </span>
+            <h2 className="font-serif font-light text-foreground tracking-tight" style={{ fontSize: 'var(--text-h2)' }}>
+              Rigorous documentation systems tailored for highly regulated sectors.
             </h2>
-            <p className="text-base text-text-body leading-relaxed">
-              Structured, citation-accurate technical writing wherever a written document decides the outcome.
-            </p>
-          </motion.div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {practices.map((p, i) => {
-              const isActive = activePractice === p.id;
-              const Icon = p.icon;
+          {/* Grid Layout — 1 col mobile, 2 col tablet, 4 col desktop */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border/40 border border-border">
+            {services.map((service, index) => {
+              const IconComponent = service.icon;
               return (
                 <motion.div
-                  key={p.id}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={practiceInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: i * 0.12, duration: 0.5 }}
-                  onMouseEnter={() => setActivePractice(p.id)}
-                  className={`group relative flex flex-col justify-between bg-card border rounded-card p-7 md:p-8 shadow-premium cursor-pointer transition-all duration-350 overflow-hidden ${
-                    isActive
-                      ? "border-primary/50 shadow-card-hover -translate-y-1"
-                      : "border-border/70 hover:border-primary/30 hover:shadow-card-hover hover:-translate-y-1"
-                  }`}
+                  key={service.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={servicesInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="bg-white dark:bg-[#18181F] p-6 sm:p-8 flex flex-col justify-between group hover:bg-[#F7F7FA] dark:hover:bg-[#111117] transition-colors duration-300 min-h-[320px] sm:min-h-[380px] border border-border"
                 >
-                  {/* Background gradient */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${p.color} opacity-0 ${isActive ? "opacity-100" : "group-hover:opacity-100"} transition-opacity duration-300`} />
-
-                  {/* Active indicator dot */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeDot"
-                      className="absolute top-5 right-5 w-2 h-2 rounded-full bg-primary pulse-ring"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-
-                  <div className="relative space-y-6">
+                  <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <span className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300 ${
-                        isActive ? "bg-primary text-white shadow-glow" : "bg-primary/8 text-primary dark:text-primary-light group-hover:bg-primary group-hover:text-white"
-                      }`}>
-                        <Icon className="w-5 h-5" />
+                      <span className="font-mono text-[10px] text-text-subtle tracking-widest">
+                        REF // {service.reference}
                       </span>
-                      <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-text-subtle">
-                        {p.num}
+                      <span className="font-serif text-3xl font-light text-primary/30 group-hover:text-primary transition-colors duration-300">
+                        {service.num}
                       </span>
                     </div>
 
-                    <div className="space-y-2">
-                      <h3 className="font-serif text-xl font-bold text-foreground group-hover:text-foreground transition-colors">
-                        {p.title}
+                    <div className="space-y-3">
+                      <div className="p-2 border border-border w-fit rounded-none bg-white dark:bg-[#18181F]">
+                        <IconComponent className="w-5 h-5 text-primary" />
+                      </div>
+                      <h3 className="font-serif text-xl font-normal text-foreground group-hover:text-primary transition-colors duration-200">
+                        {service.title}
                       </h3>
-                      <p className="text-sm text-text-body leading-relaxed">
-                        {p.lede}
+                      <p className="font-sans text-xs leading-relaxed text-text-muted">
+                        {service.lede}
                       </p>
                     </div>
-
-                    <ul className="space-y-2.5 border-t border-border/50 pt-5">
-                      {p.bullets.map((b) => (
-                        <li key={b} className="flex gap-2.5 items-start text-xs text-text-body">
-                          <Check className="w-3.5 h-3.5 text-primary dark:text-primary-light shrink-0 mt-0.5" />
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
                   </div>
 
-                  <div className="relative pt-7">
-                    <Link
-                      href={p.href}
-                      className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-primary dark:text-primary-light link-underline group/link"
-                    >
-                      View Service Details
-                      <ArrowRight className="w-3 h-3 transition-transform duration-200 group-hover/link:translate-x-0.5" />
-                    </Link>
-                  </div>
+                  <ul className="mt-8 space-y-2 border-t border-border/40 pt-4 font-sans text-xs">
+                    {service.bullets.map((bullet) => (
+                      <li key={bullet} className="flex items-start gap-2 text-text-body">
+                        <Check className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </motion.div>
               );
             })}
           </div>
+
         </div>
       </section>
 
-      {/* ── 4. Problem / Solution ───────────────────────── */}
-      <SectionDivider />
-      <ProblemSolutionSection />
-
-      {/* ── 5. Testimonials ─────────────────────────────── */}
-      <TestimonialsSection testimonials={testimonials} />
-
-      {/* ── 6. FAQ ──────────────────────────────────────── */}
-      <FAQSection faqs={faqs} openFaq={openFaq} setOpenFaq={setOpenFaq} />
-
-      {/* ── 7. Final CTA ────────────────────────────────── */}
-      <FinalCTA />
-
-    </div>
-  );
-}
-
-/* ─── Sub-components ────────────────────────────────────── */
-
-function SectionDivider() {
-  return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-    </div>
-  );
-}
-
-function ProblemSolutionSection() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <section ref={ref} className="py-24 md:py-32 bg-card">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
-          {/* Problem */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.55 }}
-            className="space-y-6"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-mono font-bold bg-red-500/8 text-red-600 dark:text-red-400 border border-red-500/15">
-              The Problem
-            </div>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground">
-              Why standard copywriting fails regulatory scrutiny.
-            </h2>
-            <div className="space-y-4 text-sm text-text-body leading-relaxed">
-              <p>
-                Most companies hand off compliance and tender writing to marketing teams or developers who don&apos;t have time to read the source regulations.
+      {/* ── 3. METHODOLOGY SECTION (Vertical Timeline) ── */}
+      <section ref={methodologyRef} className="py-16 sm:py-20 lg:py-24 bg-[#111117] text-white border-y border-border/40 relative">
+        {/* Subtle grid background to represent blueprints */}
+        <div className="absolute inset-0 blueprint-grid opacity-[0.03] pointer-events-none" />
+        
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+            
+            {/* Left Column: Heading and Details */}
+            <div className="lg:col-span-5 space-y-5 sm:space-y-6">
+              <span className="font-mono text-xs uppercase tracking-widest text-[#7C4DFF] font-semibold">
+                OPERATIONAL PHASES
+              </span>
+              <h2 className="font-serif font-light tracking-tight text-white leading-tight" style={{ fontSize: 'var(--text-h2)' }}>
+                Our Proven Drafting &amp; Audit Methodology
+              </h2>
+              <p className="font-sans text-sm text-light-gray/80 leading-relaxed max-w-md">
+                We work as embedded regulatory engineers. Rather than generic templates, we create system-specific compliance files citing direct regulatory frameworks.
               </p>
-              <p>
-                The result: documents filled with generic marketing claims, copy-pasted templates, and vague outlines that immediately trigger audits, inspection delays, or bid rejections.
-              </p>
-            </div>
-            <div className="space-y-3">
-              {["Rejected by notified bodies", "Bid disqualifications on technicalities", "Audit delays costing months"].map((item) => (
-                <div key={item} className="flex items-center gap-2.5 text-sm text-text-body">
-                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                  </span>
-                  {item}
+              
+              <div className="pt-8 hidden lg:block">
+                <div className="border border-white/10 p-6 space-y-4 bg-[#18181F]/70">
+                  <span className="font-mono text-[10px] text-[#D8D8E2]">SYSTEM PROCESS COMPLIANCE VERIFICATION</span>
+                  <div className="flex gap-2 items-center">
+                    <Award className="w-5 h-5 text-[#7C4DFF]" />
+                    <span className="text-xs font-semibold">SLA Assurance Contract Included</span>
+                  </div>
                 </div>
-              ))}
+              </div>
             </div>
-          </motion.div>
 
-          {/* Solution */}
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.55, delay: 0.12 }}
-            className="space-y-6"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-mono font-bold badge-primary">
-              The ComplDoc Method
+            {/* Right Column: Vertical Timeline */}
+            <div className="lg:col-span-7 relative pl-5 sm:pl-8 border-l border-white/10 space-y-8 sm:space-y-12">
+              {methodologySteps.map((step, idx) => {
+                const isActive = activeStep === idx;
+                return (
+                  <div key={step.number} className="relative group">
+                    {/* Circle Anchor on Timeline */}
+                    <div 
+                      className={`absolute -left-[30px] sm:-left-[41px] top-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                        isActive 
+                          ? "bg-[#7C4DFF] border-[#7C4DFF] active-glow" 
+                          : "bg-[#111117] border-white/20 group-hover:border-[#7C4DFF]"
+                      }`}
+                    >
+                      {isActive && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
+                    </div>
+
+                    <div 
+                      onClick={() => setActiveStep(idx)}
+                      className={`cursor-pointer p-6 border transition-all duration-300 ${
+                        isActive 
+                          ? "bg-[#18181F] border-[#7C4DFF] active-glow" 
+                          : "bg-transparent border-transparent hover:border-white/10 hover:bg-[#18181F]/40"
+                      }`}
+                    >
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-mono text-[10px] text-[#7C4DFF] tracking-widest">
+                          {step.phase}
+                        </span>
+                        <span className="font-mono text-xs text-[#D8D8E2]">{step.duration}</span>
+                      </div>
+
+                      <h3 className="font-serif text-lg font-normal mb-3 text-white">
+                        {step.title}
+                      </h3>
+
+                      <AnimatePresence initial={false}>
+                        {isActive && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="overflow-hidden"
+                          >
+                            <p className="font-sans text-xs text-[#D8D8E2] leading-relaxed mb-4">
+                              {step.description}
+                            </p>
+                            <div className="space-y-2 border-t border-white/5 pt-3">
+                              <p className="font-mono text-[10px] text-white">KEY DELIVERABLES:</p>
+                              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-white/65">
+                                {step.deliverables.map((item) => (
+                                  <li key={item} className="flex items-center gap-1.5">
+                                    <FileCheck className="w-3.5 h-3.5 text-[#7C4DFF] shrink-0" />
+                                    <span>{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground">
-              Primary source drafting — every sentence cited.
-            </h2>
-            <div className="space-y-4 text-sm text-text-body leading-relaxed">
-              <p>
-                We compile documentation directly from the primary legal texts — the articles of the EU AI Act, the criteria of the RFP, or the guidelines of the aviation authority.
-              </p>
-              <p>
-                Every sentence is citation-accurate, evidence-backed, and structured to match the checklist used by the evaluator reading it.
-              </p>
-            </div>
-            <div className="space-y-3">
-              {["Article-by-article citation accuracy", "Auditor-structured evidence files", "Zero generic filler content"].map((item) => (
-                <div key={item} className="flex items-center gap-2.5 text-sm text-text-body">
-                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-                    <Check className="w-3 h-3 text-primary dark:text-primary-light" />
-                  </span>
-                  {item}
-                </div>
-              ))}
-            </div>
-          </motion.div>
+
+          </div>
 
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-function TestimonialsSection({ testimonials }: { testimonials: Testimonial[] }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <section ref={ref} className="py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          className="text-center max-w-2xl mx-auto space-y-4 mb-16"
-        >
-          <Label>Client Briefs</Label>
-          <h2 className="font-serif text-4xl font-bold text-foreground">
-            Trusted by tech leaders and aviators.
-          </h2>
-        </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {testimonials.map((t, i) => (
-            <motion.div
-              key={t.author}
-              initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.12, duration: 0.5 }}
-              className="group relative bg-card border border-border/70 rounded-card p-8 shadow-premium card-lift flex flex-col justify-between overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/4 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-              <div className="relative">
-                {/* Stars */}
-                <div className="flex gap-0.5 mb-5">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <span key={i} className="text-amber-400 text-sm">★</span>
-                  ))}
+      {/* ── 4. INDUSTRIES SECTION (Enterprise Grid) ── */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-[#0B0B0F] text-foreground">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 lg:mb-16 space-y-3 sm:space-y-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold">
+              SECTORS OF ENGAGEMENT
+            </span>
+            <h2 className="font-serif font-light text-foreground tracking-tight" style={{ fontSize: 'var(--text-h2)' }}>
+              Regulated environments require domain expertise.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {industries.map((ind) => {
+              const IconComp = ind.icon;
+              return (
+                <div key={ind.title} className="border border-border p-5 sm:p-6 hover:border-primary/50 transition-colors duration-300 flex flex-col justify-between min-h-[200px] sm:min-h-[220px] bg-white dark:bg-[#18181F]">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <div className="p-2 border border-border bg-[#F7F7FA] dark:bg-[#111117]">
+                        <IconComp className="w-4 h-4 text-primary" />
+                      </div>
+                      <span className="font-mono text-[9px] text-text-subtle tracking-wider border border-border px-2 py-0.5 hidden xs:inline-block sm:inline-block">
+                        {ind.framework}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-lg font-normal text-foreground mb-1">
+                        {ind.title}
+                      </h3>
+                      <p className="font-sans text-xs text-text-muted leading-relaxed">
+                        {ind.description}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="border-t border-border pt-3 mt-4 text-[10px] font-mono text-text-subtle flex justify-between items-center">
+                    <span>REGULATED BY:</span>
+                    <span className="font-semibold text-foreground uppercase">{ind.regulatoryBody}</span>
+                  </div>
                 </div>
-                <blockquote className="font-serif text-base italic text-foreground leading-relaxed mb-6">
-                  &ldquo;{t.quote}&rdquo;
-                </blockquote>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 5. COMPLIANCE FRAMEWORKS (Grid of Certification Cards) ── */}
+      <section ref={frameworksRef} className="py-16 sm:py-20 lg:py-24 bg-[#0B0B0F] text-white border-t border-border/40 relative">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-14 lg:mb-16 gap-5 sm:gap-6">
+            <div className="max-w-2xl space-y-3 sm:space-y-4">
+              <span className="font-mono text-xs uppercase tracking-widest text-[#7C4DFF] font-semibold">
+                TECHNICAL ASSURANCE FRAMEWORKS
+              </span>
+              <h2 className="font-serif font-light text-white tracking-tight" style={{ fontSize: 'var(--text-h2)' }}>
+                Framework Expositions We Maintain
+              </h2>
+            </div>
+            <p className="font-sans text-sm text-white/70 max-w-xs">
+              Direct mapping of compliance criteria to verify operational systems against globally recognized legislation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-white/10 border border-white/10">
+            {frameworks.map((fw, index) => (
+              <motion.div
+                key={fw.name}
+                initial={{ opacity: 0, y: 15 }}
+                animate={frameworksInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.35, delay: index * 0.05 }}
+                className="bg-[#111117] p-4 sm:p-5 lg:p-6 hover:bg-[#18181F] transition-colors duration-300 flex flex-col justify-between min-h-[140px] sm:min-h-[160px]"
+              >
+                <div>
+                  <span className="font-mono text-[9px] text-[#7C4DFF] uppercase tracking-wider">
+                    {fw.category}
+                  </span>
+                  <h3 className="font-serif text-lg font-normal text-white mt-1 mb-2">
+                    {fw.name}
+                  </h3>
+                  <p className="font-sans text-[11px] text-white/65">
+                    {fw.scope}
+                  </p>
+                </div>
+                <div className="border-t border-white/5 pt-3 mt-4 flex justify-between items-center text-[9px] font-mono text-white/50">
+                  <span>{fw.authority}</span>
+                  <span className="text-white/60">{fw.status}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 6. CASE STUDIES SECTION (Professional Briefing Layout) ── */}
+      <section ref={caseStudiesRef} className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-[#0B0B0F] text-foreground">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          
+          <div className="max-w-3xl mb-10 sm:mb-14 lg:mb-16 space-y-3 sm:space-y-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold">
+              CASE ARCHIVES
+            </span>
+            <h2 className="font-serif font-light text-foreground tracking-tight" style={{ fontSize: 'var(--text-h2)' }}>
+              Proven Regulatory Clearances
+            </h2>
+          </div>
+
+          <div className="space-y-16">
+            {caseStudies.map((caseStudy, idx) => (
+              <motion.div
+                key={caseStudy.client}
+                initial={{ opacity: 0, y: 30 }}
+                animate={caseStudiesInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: idx * 0.15 }}
+                className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 border-b border-border pb-10 sm:pb-14 lg:pb-16 last:border-0"
+              >
+                {/* Executive Metadata (Cols 1-4) */}
+                <div className="lg:col-span-4 space-y-4">
+                  <span className="font-mono text-xs text-text-subtle uppercase">{caseStudy.citation}</span>
+                  <h3 className="font-serif text-2xl font-normal text-foreground leading-tight">
+                    {caseStudy.client}
+                  </h3>
+                  <p className="font-mono text-xs text-primary font-semibold">{caseStudy.industry}</p>
+                  
+                  {/* Pull metrics */}
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 pt-5 sm:pt-6 border-t border-border">
+                    {caseStudy.metrics.map((metric) => (
+                      <div key={metric.label}>
+                        <p className="font-serif text-2xl font-bold text-foreground">{metric.value}</p>
+                        <p className="font-sans text-[11px] text-text-muted">{metric.label}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Narrative (Cols 5-12) */}
+                <div className="lg:col-span-8 flex flex-col justify-between space-y-6">
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-mono text-[10px] uppercase text-text-subtle tracking-wider mb-1">
+                        THE CHALLENGE
+                      </h4>
+                      <p className="font-sans text-sm text-text-body leading-relaxed">
+                        {caseStudy.challenge}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-mono text-[10px] uppercase text-text-subtle tracking-wider mb-1">
+                        THE SOLUTION
+                      </h4>
+                      <p className="font-sans text-sm text-text-body leading-relaxed">
+                        {caseStudy.solution}
+                      </p>
+                    </div>
+                  </div>
+
+                  <blockquote className="border-l-2 border-primary pl-4 py-2 italic font-serif text-sm text-text-muted bg-[#F7F7FA] dark:bg-[#18181F]">
+                    &ldquo;ComplDoc transformed a chaotic compliance risk matrix into a perfectly typeset regulatory dossier, satisfying the external audit committee within hours of receipt.&rdquo;
+                  </blockquote>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── 7. STATISTICS SECTION (Executive Dashboard Style) ── */}
+      <section className="py-14 sm:py-16 lg:py-20 bg-[#111117] text-white border-t border-border/40">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 items-center">
+            
+            {/* Stat Summary */}
+            <div className="space-y-4">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[#7C4DFF]">AUDIT DATA PERFORMANCE</span>
+              <h3 className="font-serif text-3xl font-light text-white leading-tight">
+                Consistently aligned to rigorous mandates.
+              </h3>
+              <p className="font-sans text-xs text-[#D8D8E2] leading-relaxed">
+                Empirical compliance reports generated by our system pass regulator evaluations on first submittal.
+              </p>
+            </div>
+
+            {/* Dashboard Mock Component */}
+            <div className="lg:col-span-2 border border-white/10 p-6 bg-[#18181F] space-y-6">
+              <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                <span className="font-mono text-xs text-white uppercase tracking-wider">ANNUAL SUBMISSION METRIC RUNTIME</span>
+                <span className="font-mono text-[10px] text-[#7C4DFF]">STABLE clearance</span>
               </div>
-              <div className="relative flex items-center gap-3.5 border-t border-border/50 pt-5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/15 text-primary dark:text-primary-light">
-                  <User className="h-5 w-5" />
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 text-center">
+                <div className="border border-white/5 p-4 bg-[#111117]">
+                  <p className="font-mono text-[9px] text-white/55">EASA FILE ACCURACY</p>
+                  <p className="font-serif text-2xl font-bold text-white mt-1">100%</p>
+                </div>
+                <div className="border border-white/5 p-4 bg-[#111117]">
+                  <p className="font-mono text-[9px] text-white/55">TENDER SCORE RATIO</p>
+                  <p className="font-serif text-2xl font-bold text-white mt-1">94.8%</p>
+                </div>
+                <div className="border border-white/5 p-4 bg-[#111117]">
+                  <p className="font-mono text-[9px] text-white/55">AUDIT SATISFACTION</p>
+                  <p className="font-serif text-2xl font-bold text-white mt-1">99.2%</p>
+                </div>
+              </div>
+
+              <div className="border-t border-white/5 pt-4 flex justify-between text-[9px] font-mono text-white/45">
+                <span>LAST RUN: 2026-07-14 18:00</span>
+                <span>SYSTEM STATUS: COMPLIANT</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── 8. TESTIMONIALS SECTION (Quote-First Layout) ── */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white dark:bg-[#0B0B0F] text-foreground border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          
+          <div className="max-w-3xl mb-10 sm:mb-14 lg:mb-16 space-y-3 sm:space-y-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold">
+              EXECUTIVE ENDORSEMENTS
+            </span>
+            <h2 className="font-serif font-light text-foreground tracking-tight" style={{ fontSize: 'var(--text-h2)' }}>
+              Trusted by procurement directors and compliance leads.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12">
+            <div className="space-y-6 border-l border-primary pl-6">
+              <p className="font-serif text-lg italic text-text-body leading-relaxed">
+                &ldquo;ComplDoc drafted our maintenance organization exposition for EASA Part-145 approval. Their technical writers understood the regulatory text better than our engineering team. An absolute masterpiece.&rdquo;
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-primary/10 dark:bg-primary/20 flex items-center justify-center font-serif text-primary dark:text-[#7C4DFF] font-semibold text-sm">
+                  AV
                 </div>
                 <div>
-                  <div className="text-sm font-bold text-foreground">{t.author}</div>
-                  <div className="text-xs text-text-muted">{t.role}, {t.org}</div>
+                  <p className="font-sans text-sm font-semibold text-foreground">Antoine Varin</p>
+                  <p className="font-sans text-xs text-text-muted">Head of Safety Expositions, Aviate Global Ltd</p>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+            </div>
 
-function FAQSection({
-  faqs, openFaq, setOpenFaq
-}: {
-  faqs: FAQ[];
-  openFaq: number | null;
-  setOpenFaq: (n: number | null) => void;
-}) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <section ref={ref} className="py-24 md:py-32 bg-card">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          className="text-center space-y-4 mb-14"
-        >
-          <Label>Got Questions?</Label>
-          <h2 className="font-serif text-4xl font-bold text-foreground">
-            Frequently asked questions.
-          </h2>
-        </motion.div>
-        <div className="space-y-3">
-          {faqs.map((faq, idx) => {
-            const isOpen = openFaq === idx;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: idx * 0.08 }}
-                className={`border rounded-card bg-background overflow-hidden transition-all duration-300 ${
-                  isOpen ? "border-primary/40 shadow-card-hover" : "border-border/60 shadow-premium hover:border-primary/25"
-                }`}
-              >
-                <button
-                  onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full flex items-center justify-between p-5 text-left group focus-visible:outline-none"
-                  aria-expanded={isOpen}
-                >
-                  <span className="font-serif text-base font-bold text-foreground group-hover:text-primary dark:group-hover:text-primary-light transition-colors">
-                    {faq.q}
-                  </span>
-                  <motion.span
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.25 }}
-                    className={`shrink-0 ml-4 p-1 rounded-lg transition-colors ${isOpen ? "bg-primary/10 text-primary dark:text-primary-light" : "text-text-muted"}`}
-                  >
-                    <ChevronDown className="w-4 h-4" />
-                  </motion.span>
-                </button>
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
-                    >
-                      <p className="px-5 pb-5 text-sm text-text-body leading-relaxed border-t border-border/40 pt-4">
-                        {faq.a}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FinalCTA() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  return (
-    <section ref={ref} className="py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={inView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.55 }}
-          className="relative overflow-hidden rounded-card bg-gradient-to-br from-primary via-primary-dark to-[#3D2A9A] p-10 md:p-16 text-center shadow-glow"
-        >
-          {/* Noise texture overlay */}
-          <div className="absolute inset-0 texture-noise opacity-30" />
-          {/* Inner orbs */}
-          <div className="absolute -top-16 -left-16 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-white/8 rounded-full blur-3xl" />
-
-          <div className="relative max-w-2xl mx-auto space-y-6">
-            <h2 className="font-serif text-4xl md:text-5xl font-extrabold text-white leading-tight">
-              Ensure your submissions withstand audit.
-            </h2>
-            <p className="text-base md:text-lg text-white/75 leading-relaxed">
-              Book a 60-minute classification call or contact our intake desk directly. Mutual non-disclosure agreements are executed before sharing technical files.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 pt-2">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 bg-white text-primary hover:bg-white/90 transition-all duration-200 text-sm font-bold py-3.5 px-7 rounded-btn shadow-lg group"
-              >
-                Book Scoping Call
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-              <a
-                href="mailto:compliancedocumentationeuaiact@gmail.com"
-                className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/25 transition-all duration-200 text-sm font-bold py-3.5 px-7 rounded-btn backdrop-blur-sm"
-              >
-                Email Intake Desk
-              </a>
+            <div className="space-y-6 border-l border-primary pl-6">
+              <p className="font-serif text-lg italic text-text-body leading-relaxed">
+                &ldquo;We secured a $12M municipal transit tender on our first bid attempt. ComplDoc&rsquo;s requirement mapping matrices allowed us to address every scoring criterion with clinical precision.&rdquo;
+              </p>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-primary/10 dark:bg-primary/20 flex items-center justify-center font-serif text-primary dark:text-[#7C4DFF] font-semibold text-sm">
+                  DB
+                </div>
+                <div>
+                  <p className="font-sans text-sm font-semibold text-foreground">Dr. Diana Boyd</p>
+                  <p className="font-sans text-xs text-text-muted">Bid Director, Transit Tech Systems</p>
+                </div>
+              </div>
             </div>
           </div>
-        </motion.div>
-      </div>
-    </section>
+
+        </div>
+      </section>
+
+      {/* ── 9. MOCK FAQ INTAKE CALL TO ACTION ── */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-[#111117] text-white border-t border-border/20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center space-y-6 sm:space-y-8">
+          <span className="font-mono text-xs uppercase tracking-widest text-[#7C4DFF] font-semibold">
+            SECURE CONSULTATION INTAKE
+          </span>
+          <h2 className="font-serif font-light text-white tracking-tight max-w-3xl mx-auto" style={{ fontSize: 'var(--text-h2)' }}>
+            Ready to structure your regulatory dossiers?
+          </h2>
+          <p className="font-sans text-sm text-white/70 max-w-xl mx-auto leading-relaxed">
+            Ensure your documentation is audit-ready and legally robust. Get in touch with our lead regulatory technical engineering experts today.
+          </p>
+          <div className="pt-2 sm:pt-4 flex justify-center">
+            <Link
+              href="/contact"
+              className="btn-primary w-full sm:w-auto px-8 text-sm font-bold uppercase tracking-widest gap-2 items-center"
+            >
+              Book Audit Assessment
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+    </div>
   );
 }

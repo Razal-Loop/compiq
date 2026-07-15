@@ -94,23 +94,23 @@ const industries: Industry[] = [
 
 export default function IndustriesPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-16 sm:py-20 lg:py-24 sm:px-6 lg:px-8">
       
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
         <span className="font-mono text-xs font-semibold uppercase tracking-widest text-primary dark:text-primary-light">
           Target Sectors
         </span>
-        <h1 className="font-serif text-4xl font-bold tracking-tight text-dark dark:text-white sm:text-5xl">
+        <h1 className="font-serif font-bold tracking-tight text-dark dark:text-white" style={{ fontSize: 'var(--text-h1)' }}>
           Tailored to your industry&apos;s regulatory pressure.
         </h1>
-        <p className="text-base text-gray-muted leading-relaxed">
+        <p className="text-base text-text-muted leading-relaxed">
           Different domains face different evaluators. We map technical capabilities onto the exact checklist your industry is scored against.
         </p>
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         {industries.map((ind, idx) => {
           const IconComp = ind.icon;
           return (
@@ -136,10 +136,10 @@ export default function IndustriesPage() {
 
                 {/* Challenges */}
                 <div className="space-y-2">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-gray-muted block">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted block">
                     Key Challenges
                   </span>
-                  <ul className="space-y-1.5 text-xs text-gray-muted leading-relaxed">
+                  <ul className="space-y-1.5 text-xs text-text-muted leading-relaxed">
                     {ind.challenges.map((chal, cIdx) => (
                       <li key={cIdx} className="flex gap-2 items-start">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary/40 dark:bg-primary-light/40 shrink-0 mt-1.5" />
@@ -151,7 +151,7 @@ export default function IndustriesPage() {
 
                 {/* Regulations */}
                 <div className="space-y-2">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-gray-muted block">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted block">
                     Target Regulations
                   </span>
                   <div className="flex flex-wrap gap-1.5">
@@ -165,7 +165,7 @@ export default function IndustriesPage() {
 
                 {/* Services */}
                 <div className="space-y-2">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-gray-muted block">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted block">
                     Recommended Services
                   </span>
                   <div className="flex flex-wrap gap-1.5">
@@ -181,7 +181,7 @@ export default function IndustriesPage() {
 
               {/* Action */}
               <div className="pt-8 border-t border-border/40 mt-8 flex justify-between items-center">
-                <span className="text-xs text-gray-muted group-hover:text-dark dark:group-hover:text-white transition-colors">
+                <span className="text-xs text-text-muted group-hover:text-dark dark:group-hover:text-white transition-colors">
                   Need an industry scope?
                 </span>
                 <Link

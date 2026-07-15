@@ -152,7 +152,7 @@ export default function ServicesPage() {
         <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.15em] text-primary dark:text-primary-light badge-primary px-3 py-1.5 rounded-full">
           <Sparkles className="w-3.5 h-3.5" /> Services Portfolio
         </span>
-        <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1]">
+        <h1 className="font-serif font-bold tracking-tight text-foreground leading-[1.1]" style={{ fontSize: 'var(--text-h1)' }}>
           Six practices.<br className="hidden md:block" /> Zero template boilerplate.
         </h1>
         <p className="text-base md:text-lg text-text-body leading-relaxed max-w-2xl mx-auto">
@@ -207,12 +207,12 @@ export default function ServicesPage() {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-8 shrink-0 w-full md:w-auto justify-between md:justify-end ml-17 md:ml-0 border-t border-border/50 pt-4 md:pt-0 md:border-0">
-                        <div className="text-left md:text-right">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 shrink-0 w-full md:w-auto justify-between md:justify-end ml-0 border-t border-border/50 pt-4 md:pt-0 md:border-0">
+                        <div className="text-left sm:text-right w-full sm:w-auto flex justify-between sm:block">
                           <span className="text-[10px] uppercase tracking-wider font-mono text-text-subtle block mb-0.5">Duration</span>
                           <span className="text-sm font-semibold text-foreground">{item.timeline}</span>
                         </div>
-                        <div className="text-left md:text-right">
+                        <div className="text-left sm:text-right w-full sm:w-auto flex justify-between sm:block">
                           <span className="text-[10px] uppercase tracking-wider font-mono text-text-subtle block mb-0.5">Fee Model</span>
                           <span className="text-sm font-semibold text-foreground">{item.pricing}</span>
                         </div>
