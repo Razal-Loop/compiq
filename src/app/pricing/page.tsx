@@ -251,8 +251,9 @@ export default function PricingPage() {
           </p>
         </div>
 
-        <div className="border border-border/60 rounded-card overflow-hidden bg-white dark:bg-card shadow-premium overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[700px]">
+        <div className="border border-border/60 rounded-card bg-white dark:bg-card shadow-premium overflow-hidden">
+          <div className="overflow-x-auto w-full scrollbar-thin">
+            <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="border-b border-border/60 bg-muted/40 font-serif text-sm text-dark dark:text-white">
                 <th className="p-5 font-semibold">Service Parameters</th>
@@ -303,6 +304,7 @@ export default function PricingPage() {
           </table>
         </div>
       </div>
+    </div>
 
     </div>
   );

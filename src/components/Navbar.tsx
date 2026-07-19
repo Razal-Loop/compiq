@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/Logo";
-import { useTheme } from "@/components/ThemeProvider";
-import { Sun, Moon, Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
@@ -21,7 +20,6 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-  const { theme, toggleTheme } = useTheme();
 
   const [prevPathname, setPrevPathname] = useState(pathname);
   if (pathname !== prevPathname) {
@@ -37,11 +35,7 @@ export function Navbar() {
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
@@ -50,19 +44,19 @@ export function Navbar() {
       <nav
         role="navigation"
         aria-label="Main navigation"
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-350 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled || isOpen
-            ? "bg-white/98 dark:bg-[#0B0B0F]/98 backdrop-blur-md border-b border-border shadow-premium py-3"
+            ? "bg-[#F7F3EC] border-b border-[rgba(15,26,46,0.12)] shadow-[0_1px_3px_rgba(15,26,46,0.06)] py-3"
             : "bg-transparent py-4 sm:py-6"
         }`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
 
             {/* Logo */}
             <Logo size={22} />
 
-            {/* Desktop Nav — hidden below md */}
+            {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-0.5 lg:gap-1">
               {navItems.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -70,16 +64,16 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`relative px-3 lg:px-4 py-2 text-[11px] lg:text-xs font-semibold uppercase tracking-wider transition-all duration-200 whitespace-nowrap ${
+                    className={`relative px-3 lg:px-4 py-2 font-mono text-[11px] lg:text-[12px] uppercase tracking-widest transition-all duration-200 whitespace-nowrap ${
                       isActive
-                        ? "text-primary dark:text-[#7C4DFF]"
-                        : "text-text-muted hover:text-foreground"
+                        ? "text-[#6B4FBB]"
+                        : "text-[rgba(15,26,46,0.6)] hover:text-[#0F1A2E]"
                     }`}
                   >
                     {isActive && (
                       <motion.span
-                        layoutId="navPill"
-                        className="absolute inset-x-3 lg:inset-x-4 bottom-0 h-0.5 bg-primary dark:bg-[#7C4DFF]"
+                        layoutId="navUnderline"
+                        className="absolute inset-x-3 lg:inset-x-4 bottom-0 h-px bg-[#6B4FBB]"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
                     )}
@@ -89,53 +83,23 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Desktop Actions */}
-            <div className="hidden md:flex items-center gap-2 lg:gap-3">
-              {/* Theme Toggle — 44×44px touch target */}
-              <motion.button
-                onClick={toggleTheme}
-                whileTap={{ scale: 0.98 }}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center border border-border text-text-muted hover:text-foreground hover:bg-muted transition-all duration-200"
-                aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.span
-                    key={theme}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.15 }}
-                    className="flex"
-                  >
-                    {theme === "light" ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
-                  </motion.span>
-                </AnimatePresence>
-              </motion.button>
-
-              {/* CTA Button */}
+            {/* Desktop CTAs */}
+            <div className="hidden md:flex items-center gap-3">
               <Link
                 href="/contact"
-                className="btn-primary px-4 lg:px-5 text-[11px] lg:text-xs font-semibold uppercase tracking-wider group whitespace-nowrap"
+                className="btn-primary px-5 text-[11px] lg:text-[12px] group whitespace-nowrap gap-2"
               >
                 Secure Intake
-                <ArrowRight className="w-3.5 h-3.5 ml-1.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
               </Link>
             </div>
 
-            {/* Mobile Actions — visible below md */}
-            <div className="flex md:hidden items-center gap-1.5">
-              <motion.button
-                onClick={toggleTheme}
-                whileTap={{ scale: 0.95 }}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center border border-border text-text-muted hover:text-foreground hover:bg-muted transition-all"
-                aria-label="Toggle theme"
-              >
-                {theme === "light" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-              </motion.button>
+            {/* Mobile Hamburger */}
+            <div className="flex md:hidden items-center">
               <motion.button
                 onClick={() => setIsOpen(!isOpen)}
                 whileTap={{ scale: 0.95 }}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center border border-border text-text-muted hover:text-foreground hover:bg-muted transition-all"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center border border-[rgba(15,26,46,0.2)] text-[#0F1A2E] hover:bg-[rgba(15,26,46,0.05)] transition-all"
                 aria-label={isOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isOpen}
                 aria-controls="mobile-menu"
@@ -159,7 +123,7 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Full-Screen Drawer — rendered as portal at root level */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -169,17 +133,17 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-40 bg-[rgba(15,26,46,0.3)] md:hidden"
               onClick={() => setIsOpen(false)}
             />
-            {/* Slide-down drawer */}
+            {/* Drawer */}
             <motion.div
               id="mobile-menu"
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.22, ease: "easeOut" }}
-              className="fixed top-[57px] left-0 right-0 z-40 md:hidden bg-white dark:bg-[#0B0B0F] border-b border-border shadow-lg max-h-[calc(100vh-57px)] overflow-y-auto"
+              className="fixed top-[57px] left-0 right-0 z-40 md:hidden bg-[#F7F3EC] border-b border-[rgba(15,26,46,0.12)] max-h-[calc(100vh-57px)] overflow-y-auto"
             >
               <div className="px-4 pt-2 pb-6 space-y-0.5">
                 {navItems.map((item) => {
@@ -189,13 +153,13 @@ export function Navbar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      className={`flex items-center gap-3 py-3.5 px-4 text-sm font-semibold uppercase tracking-wider border-b border-border/40 last:border-0 transition-all min-h-[52px] ${
+                      className={`flex items-center gap-3 py-3.5 px-4 font-mono text-xs uppercase tracking-widest border-b border-[rgba(15,26,46,0.08)] last:border-0 transition-all min-h-[52px] ${
                         isActive
-                          ? "text-primary dark:text-[#7C4DFF] bg-primary/5"
-                          : "text-foreground hover:bg-muted"
+                          ? "text-[#6B4FBB] bg-[rgba(107,79,187,0.05)]"
+                          : "text-[#0F1A2E] hover:bg-[rgba(15,26,46,0.04)]"
                       }`}
                     >
-                      {isActive && <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
+                      {isActive && <span className="w-1.5 h-1.5 bg-[#6B4FBB] shrink-0" />}
                       {item.label}
                     </Link>
                   );
@@ -204,7 +168,7 @@ export function Navbar() {
                   <Link
                     href="/contact"
                     onClick={() => setIsOpen(false)}
-                    className="btn-primary w-full inline-flex items-center justify-center gap-2 text-sm font-semibold uppercase tracking-wider px-5"
+                    className="btn-primary w-full gap-2 text-xs"
                   >
                     Secure Intake
                     <ArrowRight className="w-4 h-4" />

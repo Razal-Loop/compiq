@@ -1,54 +1,17 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React from "react";
 
-type Theme = "light" | "dark";
-
-interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-}
-
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
+// ThemeProvider simplified — no dark/light toggle.
+// The site uses a permanent warm-paper light theme.
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme;
-    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const activeTheme = savedTheme || (systemPrefersDark ? "dark" : "light");
-    
-    document.documentElement.classList.toggle("dark", activeTheme === "dark");
-    
-    // Defer state updates to avoid synchronous setState within useEffect
-    setTimeout(() => {
-      setTheme(activeTheme);
-      setMounted(true);
-    }, 0);
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-  };
-
-  return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div style={{ opacity: mounted ? 1 : 0 }} className="contents transition-opacity duration-300">
-        {children}
-      </div>
-    </ThemeContext.Provider>
-  );
+  return <>{children}</>;
 }
 
+// Stub hook retained for any legacy imports, but theme is always "light".
 export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider");
-  }
-  return context;
+  return {
+    theme: "light" as const,
+    toggleTheme: () => {},
+  };
 }
